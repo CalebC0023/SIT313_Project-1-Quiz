@@ -65,12 +65,7 @@ namespace SIT313_Project_1_Quiz
                             LoginButtons("Guest"), //The 'Guest' Button (For guests; no persistent data).
 
                             //Display clickable label for recovering passwords.
-                            new Label
-                            {
-                                Text = "Forgot password?",
-                                FontSize = 11,
-                                HorizontalOptions = LayoutOptions.Center
-                            }
+                            LoginClickLabel() //The clickable 'Forgot Password?" Label.
                         }
             };
 
@@ -126,7 +121,7 @@ namespace SIT313_Project_1_Quiz
         public StackLayout LoginTextFields(string label, bool isPassWord)
         {
 
-            //Return this layout after applying the changes
+            //Return this Stacklayout after applying the changes
             return new StackLayout
             {
                 Spacing = 1,
@@ -154,9 +149,10 @@ namespace SIT313_Project_1_Quiz
         public Button LoginButtons(string label)
         {
 
-            //Return this layout after applying the changes
-            return new Button
+            //Return this button layout after applying the changes
+            Button btn = new Button
             {
+                StyleId = label,
                 Text = label, //Set appropriate label.
                 TextColor = Color.FromHex("FFFFFF"),
                 //Set the prefered size for the button
@@ -165,6 +161,53 @@ namespace SIT313_Project_1_Quiz
                 BackgroundColor = Color.FromHex("000f3c"),
                 HorizontalOptions = LayoutOptions.Center
             };
+
+            /* Verify which button click event is applied.
+             * Use of the 'Command' object is found in the link below.
+             * URL: {https://blog.xamarin.com/simplifying-events-with-commanding/}
+             */
+            if (label.Equals("Login"))
+            {
+                
+            }
+            else if (label.Equals("Register"))
+            {
+                btn.Command = new Command(ToRegister);
+            }
+            else if (label.Equals("Guest"))
+            {
+
+            }
+
+            return btn; //Return this button.
+
+        }
+
+        //A custom clickable label.
+        public Label LoginClickLabel()
+        {
+            //Create the base "Forgot Password?" label.
+            Label get_pw_lbl = new Label
+            {
+                Text = "Forgot password?",
+                FontSize = 11,
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            /* The following codes on command and gestures derived from the
+             * following links.
+             * URL: {https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/gestures/tap/}
+             * URL: {https://stackoverflow.com/questions/35811060/how-to-create-click-event-on-label-in-xamarin-forms-dynamically}
+             */
+
+            //Add the 'onclick' event
+            var lbl_tap = new TapGestureRecognizer();
+            lbl_tap.Command = new Command(ToGetPassword);
+
+            //Add the 'tap' gesture with its event.
+            get_pw_lbl.GestureRecognizers.Add(lbl_tap);
+
+            return get_pw_lbl; //Return the custom label.
         }
 
         /* Gets the current orientation.
@@ -189,6 +232,19 @@ namespace SIT313_Project_1_Quiz
                 layout_content.Orientation = StackOrientation.Vertical;
                 layout_btn_group.HorizontalOptions = LayoutOptions.Center;
             }
+        }
+
+        //Click action which opens the 'RegisterPage.xaml' file.
+        //URL: {https://www.youtube.com/watch?v=OT2pwGQgAqQ}
+        async void ToRegister()
+        {
+            await Navigation.PushAsync(new RegisterPage());
+        }
+
+        //Click action to the 'GetPWPage.xaml' file.
+        async void ToGetPassword()
+        {
+            await Navigation.PushAsync(new GetPWPage());
         }
 
     }
