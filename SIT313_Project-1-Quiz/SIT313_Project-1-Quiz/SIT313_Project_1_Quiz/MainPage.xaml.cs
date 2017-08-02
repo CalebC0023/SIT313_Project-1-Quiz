@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics; //For Debugging
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,11 +10,16 @@ namespace SIT313_Project_1_Quiz
 {
     public partial class MainPage : ContentPage
     {
+
+        //Public class variables which allows dynamic changes to its properties
+        private StackLayout layout_content;
+        private StackLayout layout_btn_group;
+
         public MainPage()
         {
             InitializeComponent();
 
-            //Dynamically build the layout for the 'login' page.
+            //Build initial layout for the 'login' page.
             BuildLoginPage();
         }
 
@@ -46,95 +52,56 @@ namespace SIT313_Project_1_Quiz
                 HorizontalOptions = LayoutOptions.CenterAndExpand //Controls horizontal placement. Vertical placement: 'VerticalOptions'.
             };
 
+            //Grouped objects to make layout orientation chnages easier.
+            //Also defined to allow dynamic change of properties.
+            layout_btn_group = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                Children =
+                        {
+                            //Display the appropriate buttons.
+                            LoginButtons("Login"), //The 'Login' Button.
+                            LoginButtons("Register"), //The 'Register' Button.
+                            LoginButtons("Guest"), //The 'Guest' Button (For guests; no persistent data).
+
+                            //Display clickable label for recovering passwords.
+                            new Label
+                            {
+                                Text = "Forgot password?",
+                                FontSize = 11,
+                                HorizontalOptions = LayoutOptions.Center
+                            }
+                        }
+            };
+
             //The StackLayout containing the body contents for the page.
-            StackLayout layout_content = new StackLayout
+            layout_content = new StackLayout
             {
 
                 Spacing = 3, //Assign appropriate spacing.
                 Orientation = StackOrientation.Vertical, //Set orientation to vertical (Display from top to bottom).
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 BackgroundColor = Color.FromHex("e6fcff"), //Set background colour.
-                Padding = new Thickness(7, 13, 7, 0), //Set the padding for a better style
+                Padding = new Thickness(7, 13, 7, 0), //Set the padding for a better style.
 
                 //The UI elements within this layout.
                 Children =
                 {
 
-                    //Display the appropriate labels and textfields for specific input.
-                    //The following is for the 'Username' field.
-                    new StackLayout
-                    {
-                        Spacing = 1,
-                        Orientation = StackOrientation.Horizontal, //Set orientation to vertical (Display from left to right).
-                        Children = {
-                            new Label
-                            {
-                                Text = "Username:",
-                                HorizontalOptions = LayoutOptions.Start,
-                                VerticalOptions = LayoutOptions.Center
-                            },
-                            new Entry {
-                                Placeholder = "Username",
-                                HorizontalOptions = LayoutOptions.FillAndExpand,
-                            }
+                    //Grouped objects to make layout orientation chnages easier.
+                    new StackLayout {
+                        Orientation = StackOrientation.Vertical,
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        Children =
+                        {
+                            //Display the appropriate labels and textfields for specific input.
+                            LoginTextFields("Username", false), //The following is for the 'Username' field.
+                            LoginTextFields("Password", true) //The following is for the 'Password' field.
                         }
                     },
 
-                    //The following is for the 'Password' field.
-                    new StackLayout
-                    {
-                        Spacing = 2,
-                        Orientation = StackOrientation.Horizontal,
-                        Children = {
-                            new Label
-                            {
-                                Text = "Password:",
-                                HorizontalOptions = LayoutOptions.Start,
-                                VerticalOptions = LayoutOptions.Center
-                            },
-                            new Entry {
-                                Placeholder = "Password",
-                                IsPassword = true, //Set block characters to hide passwords.
-                                HorizontalOptions = LayoutOptions.FillAndExpand
-                            }
-                        }
-                    },
-
-                    //The 'Login' Button
-                    new Button
-                    {
-                        Text = "Login",
-                        TextColor = Color.FromHex("FFFFFF"),
-                        //Set the prefered size for the button
-                        HeightRequest = 40,
-                        WidthRequest = 150,
-                        BackgroundColor = Color.FromHex("000f3c"),
-                        HorizontalOptions = LayoutOptions.Center
-                    },
-
-                    //The 'Register' Button
-                    new Button
-                    {
-                        Text = "Register",
-                        TextColor = Color.FromHex("FFFFFF"),
-                        //Set the prefered size for the button
-                        HeightRequest = 40,
-                        WidthRequest = 150,
-                        BackgroundColor = Color.FromHex("000f3c"),
-                        HorizontalOptions = LayoutOptions.Center
-                    },
-
-                    //The 'Guest' Button (For guests; no persistent data)
-                    new Button
-                    {
-                        Text = "Guest",
-                        TextColor = Color.FromHex("FFFFFF"),
-                        //Set the prefered size for the button
-                        HeightRequest = 40,
-                        WidthRequest = 150,
-                        BackgroundColor = Color.FromHex("000f3c"),
-                        HorizontalOptions = LayoutOptions.Center
-                    }
+                    //Second grouped objects.
+                    layout_btn_group
 
                 }
 
@@ -145,6 +112,7 @@ namespace SIT313_Project_1_Quiz
             this.Content = new StackLayout
             {
                 BackgroundColor = Color.FromHex("000020"),
+                Orientation = StackOrientation.Vertical,
                 Children =
                 {
                     header,
@@ -154,6 +122,74 @@ namespace SIT313_Project_1_Quiz
             
         }
 
+        //Base layout of textfields
+        public StackLayout LoginTextFields(string label, bool isPassWord)
+        {
+
+            //Return this layout after applying the changes
+            return new StackLayout
+            {
+                Spacing = 1,
+                Orientation = StackOrientation.Horizontal, //Set orientation to vertical (Display from left to right).
+                Children = {
+                            //The label for the textfield.
+                            new Label
+                            {
+                                Text = label + ":", //Set appropriate label.
+                                HorizontalOptions = LayoutOptions.Start,
+                                VerticalOptions = LayoutOptions.Center
+                            },
+                            //The entry textfield.
+                            new Entry {
+                                Placeholder = label, //Set appropriate label.
+                                IsPassword = isPassWord, //If true, set block characters to hide passwords.
+                                HorizontalOptions = LayoutOptions.FillAndExpand,
+                            }
+                        }
+            };
+
+        }
+
+        //Base layout of buttons
+        public Button LoginButtons(string label)
+        {
+
+            //Return this layout after applying the changes
+            return new Button
+            {
+                Text = label, //Set appropriate label.
+                TextColor = Color.FromHex("FFFFFF"),
+                //Set the prefered size for the button
+                HeightRequest = 40,
+                WidthRequest = 150,
+                BackgroundColor = Color.FromHex("000f3c"),
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
+
+        /* Gets the current orientation.
+         * With the help from the tutorial below, the following code allows
+         * the layout to dynamically change depending on the orientation.
+         * URL: {https://www.youtube.com/watch?v=pYVjQco0e-Y}
+         */
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            //Controls the layout for each orientation
+            if (width > height)
+            {
+                //Landscape layout
+                layout_content.Orientation = StackOrientation.Horizontal;
+                layout_btn_group.HorizontalOptions = LayoutOptions.End;
+            }
+            else
+            {
+                //Portrait layout
+                layout_content.Orientation = StackOrientation.Vertical;
+                layout_btn_group.HorizontalOptions = LayoutOptions.Center;
+            }
+        }
 
     }
 }
