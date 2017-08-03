@@ -9,26 +9,26 @@ using Xamarin.Forms.Xaml;
 
 namespace SIT313_Project_1_Quiz
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GetPWPage : ContentPage
-    {
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class ResetSecurityPage : ContentPage
+	{
 
-        public GetPWPage()
-        {
-            InitializeComponent();
+        public ResetSecurityPage ()
+		{
+			InitializeComponent ();
 
             //Build the base layout
-            BuildGetPWPage();
+            BuildResetSecurityPage();
         }
 
-        //Build the base layout for the 'GetPWPage'.
-        public void BuildGetPWPage()
+        //Build the base layout for the 'ResetSecurityPage'.
+        public void BuildResetSecurityPage()
         {
 
             //The header label.
             Label header = new Label
             {
-                Text = "Reset Password",
+                Text = "Security Question",
                 TextColor = Color.FromHex("FFFFFF"), //Set text colour.
                 FontAttributes = FontAttributes.Bold, //Set text attributes.
                 FontSize = 25, //Set text font.
@@ -49,6 +49,16 @@ namespace SIT313_Project_1_Quiz
                 Children =
                 {
 
+                    //Layout for the security question's label.
+                    new Label
+                    {
+                        Text = "Question:\nWhat is the Deakin Code for this subject?",
+                        HorizontalTextAlignment = TextAlignment.Center, //Set the text's allignment
+                        FontAttributes = FontAttributes.Bold, //Set text attributes.
+                        FontSize = 20, //Set text font.
+                        HorizontalOptions = LayoutOptions.CenterAndExpand //Control placement.
+                    },
+
                     //Layout for the text entry field.
                     new StackLayout
                     {
@@ -59,13 +69,13 @@ namespace SIT313_Project_1_Quiz
                             //The label for the textfield.
                             new Label
                             {
-                                Text = "Username:",
+                                Text = "Answer:",
                                 HorizontalOptions = LayoutOptions.Start,
                                 VerticalOptions = LayoutOptions.Center
                             },
                             //The entry textfield.
                             new Entry {
-                                Placeholder = "Enter Username",
+                                Placeholder = "Enter Answer",
                                 HorizontalOptions = LayoutOptions.FillAndExpand,
                             }
                         }
@@ -80,12 +90,12 @@ namespace SIT313_Project_1_Quiz
                         {
                             new Button
                             {
-                                Text = "Reset",
+                                Text = "Confirm",
                                 TextColor = Color.FromHex("FFFFFF"),
                                 //Set the prefered size for the button
                                 HeightRequest = 40,
                                 WidthRequest = 150,
-                                Command =  new Command(ConfirmReset), //Set the click event.
+                                Command =  new Command(ToResetPWPage), //Set the click event.
                                 BackgroundColor = Color.FromHex("000f3c"),
                             }
                         }
@@ -109,25 +119,10 @@ namespace SIT313_Project_1_Quiz
 
         }
 
-        /* Popup a confirmation alert.
-         * The following code was referenced from the tutorial below.
-         * URL: {https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/navigation/pop-ups/}
-         */
-        async void ConfirmReset()
+        //Transitions to the 'ResetPWPage'.
+        async void ToResetPWPage()
         {
-            //Get the answer for the alert.
-            bool answer = await DisplayAlert("Confirmation", "Are you sure you want to reset Password?", "Yes", "No");
-            //If the user 'accepts', run another action (e.g. transition to new page).
-            if (answer)
-            {
-                ToResetSecurityPage();
-            }
-        }
-
-        //Transitions to the 'ResetSecurityPage'.
-        async void ToResetSecurityPage()
-        {
-            await Navigation.PushAsync(new ResetSecurityPage());
+            await Navigation.PushAsync(new ResetPWPage());
         }
 
     }

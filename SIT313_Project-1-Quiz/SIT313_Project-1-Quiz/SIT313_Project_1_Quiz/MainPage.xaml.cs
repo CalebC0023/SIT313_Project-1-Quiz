@@ -106,8 +106,8 @@ namespace SIT313_Project_1_Quiz
             //URL: {https://github.com/xamarin/xamarin-forms-samples/blob/master/FormsGallery/FormsGallery/FormsGallery/StackLayoutDemoPage.cs}
             this.Content = new StackLayout
             {
-                BackgroundColor = Color.FromHex("000020"),
-                Orientation = StackOrientation.Vertical,
+                BackgroundColor = Color.FromHex("000020"), //Set base background colour.
+                Orientation = StackOrientation.Vertical, //Set base orientation.
                 Children =
                 {
                     header,
@@ -125,7 +125,7 @@ namespace SIT313_Project_1_Quiz
             return new StackLayout
             {
                 Spacing = 1,
-                Orientation = StackOrientation.Horizontal, //Set orientation to vertical (Display from left to right).
+                Orientation = StackOrientation.Horizontal, //Set orientation to horizontal (Display from left to right).
                 Children = {
                             //The label for the textfield.
                             new Label
@@ -152,7 +152,6 @@ namespace SIT313_Project_1_Quiz
             //Return this button layout after applying the changes
             Button btn = new Button
             {
-                StyleId = label,
                 Text = label, //Set appropriate label.
                 TextColor = Color.FromHex("FFFFFF"),
                 //Set the prefered size for the button
@@ -223,25 +222,25 @@ namespace SIT313_Project_1_Quiz
             if (width > height)
             {
                 //Landscape layout
-                layout_content.Orientation = StackOrientation.Horizontal;
-                layout_btn_group.HorizontalOptions = LayoutOptions.End;
+                layout_content.Orientation = StackOrientation.Horizontal; //Change the StackOrientation for landscape.
+                layout_btn_group.HorizontalOptions = LayoutOptions.End; //Change the positioning for landscape.
             }
             else
             {
                 //Portrait layout
-                layout_content.Orientation = StackOrientation.Vertical;
-                layout_btn_group.HorizontalOptions = LayoutOptions.Center;
+                layout_content.Orientation = StackOrientation.Vertical; //Change the StackOrientation for portrait.
+                layout_btn_group.HorizontalOptions = LayoutOptions.Center; //Change the positioning for portrait.
             }
         }
 
-        //Click action which opens the 'RegisterPage.xaml' file.
+        //Transitions to the 'RegisterPage'.
         //URL: {https://www.youtube.com/watch?v=OT2pwGQgAqQ}
         async void ToRegister()
         {
             await Navigation.PushAsync(new RegisterPage());
         }
 
-        //Click action to the 'GetPWPage.xaml' file.
+        //Transitions to the 'GetPWPage'.
         async void ToGetPassword()
         {
             await Navigation.PushAsync(new GetPWPage());
