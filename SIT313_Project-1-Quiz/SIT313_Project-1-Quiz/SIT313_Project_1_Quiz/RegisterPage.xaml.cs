@@ -107,9 +107,9 @@ namespace SIT313_Project_1_Quiz
 
                 Children =
                 {
-                    RegisterTextFields("Username"),
-                    RegisterTextFields("Password"),
-                    RegisterTextFields("Confirm Password"),
+                    RegisterTextFields("Username", false),
+                    RegisterTextFields("Password", true),
+                    RegisterTextFields("Confirm Password", true),
 
                     //Define a new StackLayout pickerfield.
                     new StackLayout
@@ -136,7 +136,7 @@ namespace SIT313_Project_1_Quiz
 
                     },
 
-                    RegisterTextFields("Answer")
+                    RegisterTextFields("Answer", false)
                 }
             };
 
@@ -177,7 +177,7 @@ namespace SIT313_Project_1_Quiz
         }
 
         //Base layout of textfields.
-        public StackLayout RegisterTextFields(string label)
+        public StackLayout RegisterTextFields(string label, bool isPassword)
         {
 
             //Return this Stacklayout after applying the changes
@@ -199,7 +199,7 @@ namespace SIT313_Project_1_Quiz
                     new Entry
                     {
                         Placeholder = label, //Set appropriate label.
-                        IsPassword = true, //Set bloack characters to hide passwords.
+                        IsPassword = isPassword, //Set block characters to hide ONLY passwords.
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                     }
                 }

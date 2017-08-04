@@ -10,26 +10,26 @@ using Xamarin.Forms.Xaml;
 namespace SIT313_Project_1_Quiz
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ProfilePage : ContentPage
+    public partial class ReviewPage : ContentPage
     {
 
-        StackLayout layout_content, bottom_btns;
+        StackLayout bottom_btns, layout_content;
 
-        public ProfilePage()
+        public ReviewPage()
         {
             InitializeComponent();
 
-            //Build the base layout.
-            BuildQuizPage();
+            //Build the base layout
+            BuildReviewPage();
         }
 
-        public void BuildQuizPage()
+        public void BuildReviewPage()
         {
 
             //The header label.
             Label header = new Label
             {
-                Text = "Welcome, (USERNAME)!",
+                Text = "Review Quiz",
                 TextColor = Color.FromHex("FFFFFF"), //Set text colour.
                 FontAttributes = FontAttributes.Bold, //Set text attributes.
                 FontSize = 25, //Set text font.
@@ -37,8 +37,8 @@ namespace SIT313_Project_1_Quiz
                 HorizontalOptions = LayoutOptions.CenterAndExpand //Control placement.
             };
 
-            //Create the base content layout.
-            layout_content = BaseProfileLayout();
+            //Set the page's content using the base layout.
+            layout_content = BaseReviewLayout();
 
             //The buttons at the bottom of the screen.
             bottom_btns = new StackLayout
@@ -50,12 +50,12 @@ namespace SIT313_Project_1_Quiz
 
                 Children =
                 {
-                    ProfileButtons("New Quiz"),
-                    ProfileButtons("Resume Quiz")
+                    ReviewButtons("Return"),
+                    ReviewButtons("Submit")
                 }
             };
 
-            //Add the last objects to the layout
+            //Add the extra buttons to the layout.
             layout_content.Children.Add(bottom_btns);
 
             //Combine and build base layout.
@@ -73,18 +73,20 @@ namespace SIT313_Project_1_Quiz
         }
 
         //The base layout for the content.
-        public StackLayout BaseProfileLayout()
+        public StackLayout BaseReviewLayout()
         {
 
-            //The base register form layout.
-            StackLayout profile_form = new StackLayout
+            //The base review form layout.
+            StackLayout review_form = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
 
                 Children =
-                {                
-                    //Get the final list
-                    ProfileResults(),
+                {
+                    ReviewAnswerFields("Date", 1),
+                    ReviewAnswerFields("Name", 2),
+                    ReviewAnswerFields("Diary", 3),
+                    ReviewAnswerFields("Gender", 4)
                 }
             };
 
@@ -106,7 +108,7 @@ namespace SIT313_Project_1_Quiz
                     {
                         Orientation = ScrollOrientation.Vertical, //Controls the scoll direction.
                         IsClippedToBounds = true, //Ensures the ScrollView is 'clipped' to the borders regardless of the amount of content.
-                        Content = profile_form, //Set the form's layout into the ScollView.
+                        Content = review_form, //Set the form's layout into the ScollView.
 
                         //Fill any free space until the border (e.g. objects or screen).
                         VerticalOptions = LayoutOptions.FillAndExpand,
@@ -121,8 +123,71 @@ namespace SIT313_Project_1_Quiz
 
         }
 
+        //Base layout of textfields.
+        public StackLayout ReviewAnswerFields(string title, int id)
+        {
+
+            //For displaying a 'caution' icon
+            Image _image = new Image
+            {
+                //Set appropriate size
+                HeightRequest = 15,
+                WidthRequest = 15,
+                //Postion the image at the top-right corner.
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center
+            };
+
+            //Return this Stacklayout after applying the changes
+            StackLayout pre_layout = new StackLayout
+            {
+                Spacing = 1,
+                Padding = new Thickness(8, 8, 8, 8),
+                Orientation = StackOrientation.Vertical,
+                Children =
+                {
+                    //The label for the answer field.
+                    new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Children =
+                        {
+                            new Label
+                            {
+                                Text = title + ":", //Set appropriate label.
+                                HorizontalOptions = LayoutOptions.Start,
+                                VerticalOptions = LayoutOptions.Center
+                            },
+                            _image
+                        }
+                    },
+                    //The answer text.
+                    new Label
+                    {
+                        Text = "[ ANSWER ]", //Set dummy text.
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center
+                    }
+                }
+            };
+
+            //Used to 'mark' incomplete questions.
+            if (id == 2 || id == 3)
+            {
+                //Set an appropriate background color to 'caution' the user
+                pre_layout.BackgroundColor = Color.FromHex("fff997");
+                //Display the 'caution' image.
+                _image.Aspect = Aspect.AspectFit;
+                _image.Source = ImageSource.FromFile("Caution.png");
+            }
+
+            //Return final layout.
+            return pre_layout;
+
+        }
+
         //Base layout of buttons
-        public Button ProfileButtons(string label)
+        public Button ReviewButtons(string label)
         {
 
             //Return this button layout after applying the changes
@@ -138,100 +203,17 @@ namespace SIT313_Project_1_Quiz
             };
 
             // Verify which button click event is applied.
-            if (label.Equals("New Quiz"))
+            if (label.Equals("Submit"))
+            {
+                btn.Command = new Command(ToResult);
+            }
+            else if (label.Equals("Return"))
             {
                 btn.Command = new Command(ToQuiz);
-            }
-            else if (label.Equals("Resume Quiz"))
-            {
-                btn.Command = new Command(ToResumeQuiz);
             }
 
             return btn; //Return this button.
 
-        }
-
-        //Base layout of ListView
-        public ListView ProfileResults()
-        {
-
-            //For getting each item from the list.
-            int count = 0;
-
-            //The ListView example items.
-            List<string> records = new List<string>
-            {
-                "21/07/2017 - 10 Questions (7/10 points)",
-                "01/03/2017 - 30 Questions (4/30 points)",
-                "17/02/2016 - 20 Questions (15/20 points)",
-                "30/08/2015 - 30 Questions (16/30 points)"
-            };
-
-            /* Create a ListView filled with dummy records.
-             * The following code is referenced from the link below.
-             * URL: {https://developer.xamarin.com/api/type/Xamarin.Forms.ListView/}
-             */
-            ListView list_layout = new ListView
-            {
-                ItemsSource = records,
-
-                //Go through each 'record' in the ItemsSource.
-                ItemTemplate = new DataTemplate(() =>
-                {
-
-                    Label record = new Label();
-                    //Assign the record per list cell.
-                    record.Text = records[count];
-                    count++;
-
-                    BoxView boxView = new BoxView
-                    {
-                        BackgroundColor = Color.FromHex("e6fcff")
-                    };
-
-                    // Return an assembled ViewCell.
-                    return new ViewCell
-                    {
-                        
-                        View = new StackLayout
-                        {
-                            Padding = new Thickness(0, 5),
-                            Orientation = StackOrientation.Horizontal,
-                            Children =
-                            {
-                                boxView,
-                                new StackLayout
-                                {
-                                    VerticalOptions = LayoutOptions.Center,
-                                    Spacing = 0,
-                                    Children =
-                                    {
-                                        record
-                                    }
-                                }
-                            }
-                        }
-                    };
-
-                })
-
-            };
-
-            list_layout.ItemSelected += OnItemTapped;
-            
-
-            //Retrun final list.
-            return list_layout;
-
-        }
-
-        /* This will handle the cell click events.
-         * The following code is referenced from teh link below.
-         * URL: {https://www.youtube.com/watch?v=cMRg0P2f9N4}
-         */
-        private void OnItemTapped(object sender, SelectedItemChangedEventArgs e)
-        {
-            ToPastResult();
         }
 
         // Gets the current orientation.
@@ -264,31 +246,16 @@ namespace SIT313_Project_1_Quiz
             }
         }
 
-        /* Transtion to 'QuizPage' after selecting the type of quiz.
-         * The following function is referenced from the link below.
-         * URL: {https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/navigation/pop-ups/}
-         */
+        //Transitions to the 'ResultPage'
+        async void ToResult()
+        {
+            await Navigation.PushAsync(new ResultPage());
+        }
+
+        //Go back to the 'QuizPage'
         async void ToQuiz()
         {
-            //Display the 'Dialog Action Sheet' for displaying the different types of quizzes.
-            string action = await DisplayActionSheet("Select type:", "Cancel", null, "10 Questions", "20 Questions", "30 Questions");
-            //Depending on which was selected, load the 'QuizPage'. For Project 1, it will all load the same type.
-            if (action.Contains("10 Questions") || action.Contains("20 Questions") || action.Contains("30 Questions"))
-            {
-                await Navigation.PushAsync(new QuizPage());
-            }
-        }
-
-        //Transition to the 'QuizPage'.
-        async void ToResumeQuiz()
-        {
             await Navigation.PushAsync(new QuizPage());
-        }
-
-        //Transition to the 'PastResultPage'.
-        async void ToPastResult()
-        {
-            await Navigation.PushAsync(new PastResultPage());
         }
 
     }

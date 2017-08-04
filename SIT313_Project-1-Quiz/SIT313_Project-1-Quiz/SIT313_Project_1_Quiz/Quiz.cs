@@ -17,8 +17,8 @@ namespace SIT313_Project_1_Quiz
     public class Question
     {
 
-        public int ID { get; set; } //Question ID.
-        public string label { get; set; } //The Question itself.
+        public int id { get; set; } //Question ID.
+        public string text { get; set; } //The Question itself.
         public string type { get; set; } //The type of answer (e.g. Entry, RadioBox, etc).
         public List<string> options { get; set; } //List all available options (for multiple choice questions).
 
@@ -29,8 +29,9 @@ namespace SIT313_Project_1_Quiz
          */
 
         public string help { get; set; } //The Question's hint.
-        public List<String> answer { get; set; } //The Question's answer.
+        public List<string> answer { get; set; } //The Question's answer.
         public string validate { get; set; }
+        public int weighting { get; set; }
 
     }
 
@@ -38,7 +39,7 @@ namespace SIT313_Project_1_Quiz
     public class RootQuiz
     {
 
-        public string ID { get; set; } //The Quiz ID.
+        public string id { get; set; } //The Quiz ID.
         public string title { get; set; } //The Quiz title.
         public List<Question> questions { get; set; } //The list of Questions in this Quiz
         public int score { get; set; } //The total available score for that quiz
@@ -47,7 +48,7 @@ namespace SIT313_Project_1_Quiz
          * the code below for 'questions per page' is left out as it will be needed.
          */
 
-        public List<int> questionPerPage { get; set; } //The number of Questions per Page.
+        public List<int> questionsPerPage { get; set; } //The number of Questions per Page.
 
     }
 
