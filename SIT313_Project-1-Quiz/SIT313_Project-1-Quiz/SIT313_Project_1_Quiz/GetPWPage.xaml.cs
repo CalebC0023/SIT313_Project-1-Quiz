@@ -64,7 +64,8 @@ namespace SIT313_Project_1_Quiz
                                 VerticalOptions = LayoutOptions.Center
                             },
                             //The entry textfield.
-                            new Entry {
+                            new Entry
+                            {
                                 Placeholder = "Enter Username",
                                 HorizontalOptions = LayoutOptions.FillAndExpand,
                             }

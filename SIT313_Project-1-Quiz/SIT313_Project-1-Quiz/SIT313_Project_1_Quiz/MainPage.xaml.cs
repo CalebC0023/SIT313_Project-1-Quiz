@@ -126,21 +126,23 @@ namespace SIT313_Project_1_Quiz
             {
                 Spacing = 1,
                 Orientation = StackOrientation.Horizontal, //Set orientation to horizontal (Display from left to right).
-                Children = {
-                            //The label for the textfield.
-                            new Label
-                            {
-                                Text = label + ":", //Set appropriate label.
-                                HorizontalOptions = LayoutOptions.Start,
-                                VerticalOptions = LayoutOptions.Center
-                            },
-                            //The entry textfield.
-                            new Entry {
-                                Placeholder = label, //Set appropriate label.
-                                IsPassword = isPassWord, //If true, set block characters to hide passwords.
-                                HorizontalOptions = LayoutOptions.FillAndExpand,
-                            }
-                        }
+                Children =
+                {
+                    //The label for the textfield.
+                    new Label
+                    {
+                        Text = label + ":", //Set appropriate label.
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center
+                    },
+                    //The entry textfield.
+                    new Entry
+                    {
+                        Placeholder = label, //Set appropriate label.
+                        IsPassword = isPassWord, //If true, set block characters to hide passwords.
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                    }
+                }
             };
 
         }
@@ -167,7 +169,7 @@ namespace SIT313_Project_1_Quiz
              */
             if (label.Equals("Login"))
             {
-                
+                btn.Command = new Command(ToProfile);
             }
             else if (label.Equals("Register"))
             {
@@ -175,7 +177,7 @@ namespace SIT313_Project_1_Quiz
             }
             else if (label.Equals("Guest"))
             {
-
+                btn.Command = new Command(ToProfile);
             }
 
             return btn; //Return this button.
@@ -233,8 +235,16 @@ namespace SIT313_Project_1_Quiz
             }
         }
 
+        /* Transitions to the 'GetPWPage'.
+         * The following functions on transitions are referenced from the link below.
+         * URL: {https://www.youtube.com/watch?v=OT2pwGQgAqQ}
+         */
+        async void ToProfile()
+        {
+            await Navigation.PushAsync(new ProfilePage());
+        }
+
         //Transitions to the 'RegisterPage'.
-        //URL: {https://www.youtube.com/watch?v=OT2pwGQgAqQ}
         async void ToRegister()
         {
             await Navigation.PushAsync(new RegisterPage());

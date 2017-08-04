@@ -108,27 +108,29 @@ namespace SIT313_Project_1_Quiz
             {
                 Spacing = 1,
                 Orientation = StackOrientation.Vertical,
-                Children = {
-                            //The label for the textfield.
-                            new Label
-                            {
-                                Text = label + ":", //Set appropriate label.
-                                WidthRequest = 150, //Set appropriate width.
-                                HorizontalOptions = LayoutOptions.Start,
-                                VerticalOptions = LayoutOptions.Center
-                            },
-                            //The entry textfield.
-                            new Entry {
-                                Placeholder = label, //Set appropriate label.
-                                IsPassword = true, //Set bloack characters to hide passwords.
-                                HorizontalOptions = LayoutOptions.FillAndExpand,
-                            }
-                        }
+                Children =
+                {
+                    //The label for the textfield.
+                    new Label
+                    {
+                        Text = label + ":", //Set appropriate label.
+                        WidthRequest = 140, //Set appropriate width.
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center
+                    },
+                    //The entry textfield.
+                    new Entry
+                    {
+                        Placeholder = label, //Set appropriate label.
+                        IsPassword = true, //Set bloack characters to hide passwords.
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                    }
+                }
             };
 
         }
 
-        // Gets the current orientation.
+        //Gets the current orientation.
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
@@ -148,7 +150,7 @@ namespace SIT313_Project_1_Quiz
             }
         }
 
-        // Popup a confirmation alert then transition to the 'MainPage'.
+        //Popup a confirmation alert then transition to the 'MainPage'.
         async void ResetPassword()
         {
             //Display the alert first.
